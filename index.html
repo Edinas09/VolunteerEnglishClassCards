@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vocabulary Flash Cards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #card {
+      width: 300px;
+      height: 180px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      transition: opacity 0.3s ease;
+    }
+    #card.hidden {
+      opacity: 0;
+    }
+    #image-container {
+      width: 300px;
+      height: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+      display: none;
+    }
+    #image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #controls {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #0078d4;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vocabulary Flash Cards</h1>
+
+  <div id="card">Click Start</div>
+
+  <div id="image-container">
+    <img id="word-image" src="" alt="Related image" />
+  </div>
+
+  <div id="controls">
+    <button id="start-btn">Start</button>
+  </div>
+
+  <script>
+    // You can add all your words here:
+    const words = [
+      "Airport",
+      "Analysis",
+      "Arrival",
+      "Adventure",
+      "Appointment",
+      "Assistance",
+      "Allergy",
+      "Accommodation",
+      "Activity",
+      "Agent",
+      "Accept",
+      "Achieve",
+      "Advise",
+      "Allow",
+      "Arrange",
+      "Appear",
+      "Ask",
+      "Assist",
+      "Analyze",
+      "Adapt",
+      "Bake",
+      "Bathe",
+      "Begin",
+      "Believe",
+      "Blow",
+      "Break",
+      "Bring",
+      "Build",
+      "Buy",
+      "Burn",
+      "Ball",
+      "Bag",
+      "Banana",
+      "Big",
+      "Blue",
+      "Bottle",
+      "Boy",
+      "Baby",
+      "Butterfly",
+      "Cat",
+      "Chair",
+      "Car",
+      "Cup",
+      "Cake",
+      "Cupcake",
+      "Clock",
+      "Cow",
+      "Close",
+      "Cloud",
+      "Clap",
+      "Open",
+      "Count",
+      "Catch",
+      "Come",
+      "Couch",
+      "Cave",
+      "Climb",
+      "Cook",
+      "Corn",
+      "Cool",
+      "Candy",
+      "Crayons",
+      "Can",
+      "Call",
+      "Clean",
+      "Color",
+      "Cut",
+      "Cry",
+      "Cold",
+      "Cute",
+      "Calm",
+      "Crazy",
+      "Colorful",
+      "Curly",
+      "Dark",
+      "Deep",
+      "Dry",
+      "Dizzy",
+      "Dirty",
+      "Delicious",
+      "Dangerous",
+      "Dear",
+      "Different",
+      "Daily",
+      "Monthly",
+      "Weekly",
+      "Yearly",
+      "Egg",
+      "Elephant",
+      "Ear",
+      "Eye",
+      "Engine",
+      "Envelope",
+      "Energy",
+      "Earth",
+      "Easy",
+      "Empty",
+      "Early",
+      "Excellent",
+      "Exciting",
+      "Expensive",
+      "Cheap",
+      "Eat",
+      "Enjoy",
+      "Explain",
+      "Enter",
+      "Exit",
+      "Encourage",
+      "Expect",
+      "Explore",
+      "Express",
+      "End",
+      "Examine",
+      "Escape",
+      "Exchange",
+      "Employ",
+      "Erase",
+      "Country",
+      "City",
+      "State",
+      "Capital City",
+      "Capital State",
+      "Zip Code",
+      "Address",
+      "Tourist",
+      "Lake",
+      "Tiny",
+      "Taxis",
+      "Tall",
+      "Tower",
+      "Go",
+      "Come",
+      "Get",
+      "Need",
+      "Want",
+      "Buy",
+      "Pay",
+      "Eat",
+      "Drink",
+      "Help",
+      "Open",
+      "Closed",
+      "Near",
+      "Far",
+      "Cheap",
+      "Safe",
+      "Clean",
+      "Busy",
+      "Free",
+      "Left",
+      "Right",
+      "Straight",
+      "Here",
+      "There",
+      "Turn",
+      "Stop",
+      "Entrance"
+    ];
+
+    const card = document.getElementById("card");
+    const imageContainer = document.getElementById("image-container");
+    const wordImage = document.getElementById("word-image");
+    const startBtn = document.getElementById("start-btn");
+
+    let currentIndex = 0;
+    let flashCount = 0;
+    let flashInterval = null;
+
+    function showWord(word) {
+      card.textContent = word;
+      card.classList.remove("hidden");
+      imageContainer.style.display = "none";
+    }
+
+    function showImageForWord(word) {
+      // Simple image source using Unsplash by keyword
+      const query = encodeURIComponent(word.toLowerCase());
+      const url = `https://source.unsplash.com/400x300/?${query}`;
+      wordImage.src = url;
+      imageContainer.style.display = "block";
+    }
+
+    function startFlashingWord() {
+      if (currentIndex >= words.length) {
+        card.textContent = "Done! 🎉";
+        imageContainer.style.display = "none";
+        startBtn.disabled = false;
+        return;
+      }
+
+      const word = words[currentIndex];
+      flashCount = 0;
+      showWord(word);
+
+      flashInterval = setInterval(() => {
+        card.classList.toggle("hidden");
+        flashCount++;
+
+        // 10 toggles = 5 full appear/disappear cycles
+        if (flashCount >= 10) {
+          clearInterval(flashInterval);
+          card.classList.remove("hidden");
+          // Show image for this word
+          showImageForWord(word);
+
+          // Wait a bit, then go to next word
+          setTimeout(() => {
+            currentIndex++;
+            startFlashingWord();
+          }, 2500);
+        }
+      }, 400); // speed of appear/disappear
+    }
+
+    startBtn.addEventListener("click", () => {
+      startBtn.disabled = true;
+      currentIndex = 0;
+      startFlashingWord();
+    });
+  </script>
+</body>
+</html>
