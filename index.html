@@ -14,9 +14,6 @@
       height: 100vh;
       margin: 0;
     }
-    h1 {
-      margin-bottom: 10px;
-    }
     #card {
       width: 300px;
       height: 180px;
@@ -31,9 +28,7 @@
       margin-bottom: 15px;
       transition: opacity 0.3s ease;
     }
-    #card.hidden {
-      opacity: 0;
-    }
+    #card.hidden { opacity: 0; }
     #image-container {
       width: 300px;
       height: 200px;
@@ -48,10 +43,6 @@
       height: 100%;
       object-fit: cover;
     }
-    #controls {
-      display: flex;
-      gap: 10px;
-    }
     button {
       padding: 8px 16px;
       border-radius: 8px;
@@ -61,13 +52,10 @@
       font-size: 1rem;
       cursor: pointer;
     }
-    button:disabled {
-      background: #999;
-      cursor: not-allowed;
-    }
   </style>
 </head>
 <body>
+
   <h1>Vocabulary Flash Cards</h1>
 
   <div id="card">Click Start</div>
@@ -76,170 +64,28 @@
     <img id="word-image" src="" alt="Related image" />
   </div>
 
-  <div id="controls">
-    <button id="start-btn">Start</button>
-  </div>
+  <button id="start-btn">Start</button>
 
   <script>
-    // You can add all your words here:
+    const API_KEY = "YOUR_PIXABAY_API_KEY_HERE";  // <--- INSERT YOUR KEY HERE
+
     const words = [
-      "Airport",
-      "Analysis",
-      "Arrival",
-      "Adventure",
-      "Appointment",
-      "Assistance",
-      "Allergy",
-      "Accommodation",
-      "Activity",
-      "Agent",
-      "Accept",
-      "Achieve",
-      "Advise",
-      "Allow",
-      "Arrange",
-      "Appear",
-      "Ask",
-      "Assist",
-      "Analyze",
-      "Adapt",
-      "Bake",
-      "Bathe",
-      "Begin",
-      "Believe",
-      "Blow",
-      "Break",
-      "Bring",
-      "Build",
-      "Buy",
-      "Burn",
-      "Ball",
-      "Bag",
-      "Banana",
-      "Big",
-      "Blue",
-      "Bottle",
-      "Boy",
-      "Baby",
-      "Butterfly",
-      "Cat",
-      "Chair",
-      "Car",
-      "Cup",
-      "Cake",
-      "Cupcake",
-      "Clock",
-      "Cow",
-      "Close",
-      "Cloud",
-      "Clap",
-      "Open",
-      "Count",
-      "Catch",
-      "Come",
-      "Couch",
-      "Cave",
-      "Climb",
-      "Cook",
-      "Corn",
-      "Cool",
-      "Candy",
-      "Crayons",
-      "Can",
-      "Call",
-      "Clean",
-      "Color",
-      "Cut",
-      "Cry",
-      "Cold",
-      "Cute",
-      "Calm",
-      "Crazy",
-      "Colorful",
-      "Curly",
-      "Dark",
-      "Deep",
-      "Dry",
-      "Dizzy",
-      "Dirty",
-      "Delicious",
-      "Dangerous",
-      "Dear",
-      "Different",
-      "Daily",
-      "Monthly",
-      "Weekly",
-      "Yearly",
-      "Egg",
-      "Elephant",
-      "Ear",
-      "Eye",
-      "Engine",
-      "Envelope",
-      "Energy",
-      "Earth",
-      "Easy",
-      "Empty",
-      "Early",
-      "Excellent",
-      "Exciting",
-      "Expensive",
-      "Cheap",
-      "Eat",
-      "Enjoy",
-      "Explain",
-      "Enter",
-      "Exit",
-      "Encourage",
-      "Expect",
-      "Explore",
-      "Express",
-      "End",
-      "Examine",
-      "Escape",
-      "Exchange",
-      "Employ",
-      "Erase",
-      "Country",
-      "City",
-      "State",
-      "Capital City",
-      "Capital State",
-      "Zip Code",
-      "Address",
-      "Tourist",
-      "Lake",
-      "Tiny",
-      "Taxis",
-      "Tall",
-      "Tower",
-      "Go",
-      "Come",
-      "Get",
-      "Need",
-      "Want",
-      "Buy",
-      "Pay",
-      "Eat",
-      "Drink",
-      "Help",
-      "Open",
-      "Closed",
-      "Near",
-      "Far",
-      "Cheap",
-      "Safe",
-      "Clean",
-      "Busy",
-      "Free",
-      "Left",
-      "Right",
-      "Straight",
-      "Here",
-      "There",
-      "Turn",
-      "Stop",
-      "Entrance"
+      "Airport","Analysis","Arrival","Adventure","Appointment","Assistance","Allergy",
+      "Accommodation","Activity","Agent","Accept","Achieve","Advise","Allow","Arrange",
+      "Appear","Ask","Assist","Analyze","Adapt","Bake","Bathe","Begin","Believe","Blow",
+      "Break","Bring","Build","Buy","Burn","Ball","Bag","Banana","Big","Blue","Bottle",
+      "Boy","Baby","Butterfly","Cat","Chair","Car","Cup","Cake","Cupcake","Clock","Cow",
+      "Close","Cloud","Clap","Open","Count","Catch","Come","Couch","Cave","Climb","Cook",
+      "Corn","Cool","Candy","Crayons","Can","Call","Clean","Color","Cut","Cry","Cold",
+      "Cute","Calm","Crazy","Colorful","Curly","Dark","Deep","Dry","Dizzy","Dirty",
+      "Delicious","Dangerous","Dear","Different","Daily","Monthly","Weekly","Yearly",
+      "Egg","Elephant","Ear","Eye","Engine","Envelope","Energy","Earth","Easy","Empty",
+      "Early","Excellent","Exciting","Expensive","Cheap","Eat","Enjoy","Explain","Enter",
+      "Exit","Encourage","Expect","Explore","Express","End","Examine","Escape","Exchange",
+      "Employ","Erase","Country","City","State","Capital City","Capital State","Zip Code",
+      "Address","Tourist","Lake","Tiny","Taxis","Tall","Tower","Go","Come","Get","Need",
+      "Want","Buy","Pay","Eat","Drink","Help","Open","Closed","Near","Far","Cheap","Safe",
+      "Clean","Busy","Free","Left","Right","Straight","Here","There","Turn","Stop","Entrance"
     ];
 
     const card = document.getElementById("card");
@@ -257,12 +103,24 @@
       imageContainer.style.display = "none";
     }
 
-    function showImageForWord(word) {
-      // Simple image source using Unsplash by keyword
-      const query = encodeURIComponent(word.toLowerCase());
-      const url = `https://source.unsplash.com/400x300/?${query}`;
-      wordImage.src = url;
-      imageContainer.style.display = "block";
+    async function showImageForWord(word) {
+      const url = `https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(word)}&image_type=photo&per_page=3`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.hits && data.hits.length > 0) {
+          wordImage.src = data.hits[0].webformatURL;
+        } else {
+          wordImage.src = "https://via.placeholder.com/400x300?text=No+Image";
+        }
+
+        imageContainer.style.display = "block";
+      } catch (error) {
+        wordImage.src = "https://via.placeholder.com/400x300?text=Error";
+        imageContainer.style.display = "block";
+      }
     }
 
     function startFlashingWord() {
@@ -281,20 +139,18 @@
         card.classList.toggle("hidden");
         flashCount++;
 
-        // 10 toggles = 5 full appear/disappear cycles
         if (flashCount >= 10) {
           clearInterval(flashInterval);
           card.classList.remove("hidden");
-          // Show image for this word
+
           showImageForWord(word);
 
-          // Wait a bit, then go to next word
           setTimeout(() => {
             currentIndex++;
             startFlashingWord();
           }, 2500);
         }
-      }, 400); // speed of appear/disappear
+      }, 400);
     }
 
     startBtn.addEventListener("click", () => {
@@ -303,5 +159,6 @@
       startFlashingWord();
     });
   </script>
+
 </body>
 </html>
